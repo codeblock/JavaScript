@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script type="text/javascript" src="Resize.js"></script> 
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            new Resize({
+                attrname: "resizable",
+                attrelement: null,
+                distance: "resizedistance",
+                minWidth: "resizemaxwidth",
+                minHeight: "resizemaxheight",
+                defaultCursor: "resizedefaultcursor"
+            });
+        }, false);
+        </script>
+    </head>
+
+    <body>
+        <fieldset style="border:1px solid red; width:400px; height:400px;"> 
+        <legend>FORM</legend> 
+        <form> 
+        <input type="text"><br /> 
+        <input type="password"><br /> 
+        <textarea style="width:300px; height:150px;" resizable="true" resizedistance="10" resizemaxwidth="90" resizemaxheight="30" resizedefaultcursor="text"> 
+        resizable="true" 
+        resizedistance="10" 
+        resizemaxwidth="90" 
+        resizemaxheight="30" 
+        resizedefaultcursor="text" 
+        </textarea><br /> 
+        <input type= value="resizable='true' resizedistance='10'" style="position:absolute;" resizable="true" resizedistance="10" /> 
+        </form> 
+        </fieldset> 
+
+        <div style="position:absolute; left:500px; top:300px; width:200px; height:200px; background-color:orange; overflow:hidden; cursor:pointer;" resizable="true" resizedistance="10" resizemaxwidth="50" resizemaxheight="50" resizedefaultcursor="pointer">resizable="true"<br />resizedistance="10"<br />resizemaxwidth="50"<br />resizemaxheight="50"<br />resizedefaultcursor="pointer"</div>
+    </body>
+</html>

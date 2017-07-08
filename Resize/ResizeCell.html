@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>web spread sheet</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+		* { margin: 0; padding: 0; font-size: 12px; }
+		table { border-collapse: collapse; border-spacing: 0; }
+		table.base td {
+			margin: 0;
+			width: 100px;
+			height: 50px;
+			border: 1px solid #000;
+			background-color: orange;
+		}
+		</style>
+		<script type="text/javascript" src="Resize.js"></script>
+		<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function () {
+			var $ = function (str) { return document.getElementById(str); };
+			new Resize({
+				attrname: "r1",
+				attrelement: "r2",
+				distance: "r3",
+				minWidth: "r4",
+				minHeight: "r5",
+				defaultCursor: "r6"
+			});
+			for (var i = 0, i_len = $("base").rows.length; i < i_len; i++) {
+				for (var j = 0, j_len = $("base").rows[i].cells.length; j < j_len; j++) {
+					$("base").rows[i].cells[j].onmousedown = function () { return false; }
+					$("base").rows[i].cells[j].setAttribute("r1", "true");
+					$("base").rows[i].cells[j].setAttribute("r3", "5");
+					$("base").rows[i].cells[j].setAttribute("r4", "100");
+					$("base").rows[i].cells[j].setAttribute("r5", "50");
+					$("base").rows[i].cells[j].setAttribute("r6", "text");
+				}
+			}
+			//alert($("base").outerHTML);
+		}, false);
+		</script>
+	</head>
+	<body>
+
+		<table id="base" class="base">
+		<tr>
+		<td>123</td>
+		<td>456</td>
+		<td>789</td>
+		</tr>
+		<tr>
+		<td>321</td>
+		<td>654</td>
+		<td>987</td>
+		</tr>
+		<tr>
+		<td>111</td>
+		<td>222</td>
+		<td>333</td>
+		</tr>
+		</table>
+
+	</body>
+</html>

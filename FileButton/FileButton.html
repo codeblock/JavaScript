@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+
+<style type="text/css">
+* { font-size: 12px; }
+div { margin: 123px; }
+</style>
+
+<script type="text/javascript" src="./FileButton.js"></script>
+<script type="text/javascript">
+var myFileButton = new FileButton("imageswap", "imagesrc", "text");
+document.addEventListener('DOMContentLoaded', function () {
+    myFileButton.run();
+}, false);
+</script>
+
+</head>
+
+<body>
+
+<div class="codes">
+<code>
+&lt;script type=&quot;text/javascript&quot; src=&quot;./FileButton.js&quot;&gt;&lt;/script&gt;<br />
+&lt;script type=&quot;text/javascript&quot;&gt;<br />
+var myFileButton = new FileButton(&quot;imageswap&quot;, &quot;imagesrc&quot;);<br />
+document.addEventListener('DOMContentLoaded', function () {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;//myFileButton.run();<br />
+}, false);<br />
+&lt;/script&gt;<br />
+</code>
+</div>
+
+<br /><br />
+
+<form name="F" method="post" enctype="multipart/form-data" action="">
+
+<div><input type="file" name="userfile[]" imageswap="true" imagesrc="./images/filebutton-modern-sky.gif" text="find..." /></div>
+
+<div style="margin-left: 177px;">
+	<div style="margin-left: 177px;">
+		<input type="file" name="userfile[]" imageswap="true" imagesrc="./images/button-1.gif" />
+	</div>
+</div>
+
+<div style="margin-top: 100px;"><input type="file" name="userfile[]" imageswap="true" imagesrc="./images/filebutton-modern-default.gif" text="&lt;span style=&quot;color: #fff;&quot;&gt;찾아보기...&lt;/span&gt;" /></div>
+
+<input type="submit" value="SUBMIT" style="font-size: 30pt;" onclick="this.disabled=true;" />
+
+</form>
+
+</body>
+</html>

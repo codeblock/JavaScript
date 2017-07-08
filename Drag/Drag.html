@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script type="text/javascript" src="Drag.js"></script>
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var myDrag = new Drag(
+                "draggable",
+                "dragelement",
+                "dragarea",
+                "dragdirection",
+                "scalepercent"
+            );
+
+            myDrag.addEvent(document,"onmousemove",function () {
+                document.getElementById("GridPositionX").value = myDrag.ScaleX + " : " + Math.ceil(myDrag.ScaleX / 100) + "%";
+                document.getElementById("music1").volume = myDrag.ScaleX - Number(document.getElementById("gridX").getAttribute("scalepercent"));
+                document.getElementById("text1").style.fontSize = ((myDrag.ScaleY <= 12) ? 12 : myDrag.ScaleY) + "px";
+            });
+        }, false);
+        </script>
+    </head>
+
+    <body>
+        <span id="text1" style="font-size:12pt;">Drag&amp;Drop</span>
+
+        <br>
+
+        <embed id="music1" type="application/x-mplayer2" src="http://cfs9.blog.daum.net/upload_control/download.blog?fhandle=MEhUd09AZnM5LmJsb2cuZGF1bS5uZXQ6L0lNQUdFLzAvMTAud21h&filename=10.wma&filename=%ED%8B%B0%28%EC%9C%A4%EB%AF%B8%EB%9E%98%29-%EC%8B%9C%EA%B0%84%EC%9D%B4%ED%9D%90%EB%A5%B8%EB%92%A4.wma" autostart="true"></embed>
+
+        <br>
+
+        <div style="width:300px; height:300px; background:#72C31B;" draggable="true">Drag : free</div>
+        <div style="width:200px; height:200px; background:#FFA500; position:absolute;" id="div1" draggable="true" dragarea="document.documentElement">Drag : body
+        <input type="text" id="GridPositionX">
+        </div>
+        <div style="width:100px; height:100px; background:#FF0000;" draggable="true" dragarea="document.getElementById('div1')">Drag : div1</div>
+
+        <img id="gridX" src="http://sstatic.naver.com/search/mypocket/v3/btn_atcmp_on_op2.gif" draggable="true" dragarea="document.getElementById('div1')" dragdirection="1" scalepercent="10000" onmousedown="return false" onmousemove="return false" title="HORIZONTAL">
+        <img id="gridY" src="http://sstatic.naver.com/search/mypocket/v3/btn_atcmp_on_op2.gif" draggable="true" dragarea="document.getElementById('div1')" dragdirection="2" scalepercent="500" onmousedown="return false" onmousemove="return false" title="VERTICAL">
+    </body>
+</html>
