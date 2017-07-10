@@ -1,0 +1,86 @@
+/**
+ * Calendar.css
+ *
+ * @author beanfondue@gmail.com
+ */
+
+div.calendar, div.calendar * { margin: 0; padding: 0; }
+
+div.calendar { position: absolute; /*border: 0.1em solid #718bb7;*/ }
+div.calendar * { font-size: 0.92em; }
+div.calendar table { border-collapse: collapse; border-spacing: 0; }
+div.calendar table td {
+    background-color: #fff; text-align: right;
+    font-family: Consolas, Menlo, Monospace;
+    /* font-family: Tahoma, Verdana, Sans; */
+}
+
+
+/* ------------------------------------- outline ------------------------------------- */
+div.calendar table td.calendarBorderTopLeft     ,
+div.calendar table td.calendarBorderTopCenter   ,
+div.calendar table td.calendarBorderTopRight    ,
+div.calendar table td.calendarBorderMiddleLeft  ,
+div.calendar table td.calendarBorderMiddleRight ,
+div.calendar table td.calendarBorderBottomLeft  ,
+div.calendar table td.calendarBorderBottomCenter,
+div.calendar table td.calendarBorderBottomRight {
+    overflow: hidden; line-height: 0.1em; font-size: 0.1em;
+}
+/* border-simple */
+/*
+div.calendar table td.calendarBorderTopLeft      { background-color: #718bb7; width:  1px; height:  1px; }
+div.calendar table td.calendarBorderTopCenter    { background-color: #718bb7; width: auto; height:  1px; }
+div.calendar table td.calendarBorderTopRight     { background-color: #718bb7; width:  1px; height:  1px; }
+div.calendar table td.calendarBorderMiddleLeft   { background-color: #718bb7; width:  1px; height: auto; }
+div.calendar table td.calendarBorderMiddleRight  { background-color: #718bb7; width:  1px; height: auto; }
+div.calendar table td.calendarBorderBottomLeft   { background-color: #718bb7; width:  1px; height:  1px; }
+div.calendar table td.calendarBorderBottomCenter { background-color: #718bb7; width: auto; height:  1px; }
+div.calendar table td.calendarBorderBottomRight  { background-color: #718bb7; width:  1px; height:  1px; }
+*/
+
+/* border-shadow */
+div.calendar table td.calendarBorderTopLeft      { background: radial-gradient(farthest-side at 100% 100%, #aaa, transparent); width:  9px; height:  9px; }
+div.calendar table td.calendarBorderTopCenter    { background: linear-gradient(  0deg, #aaa, transparent);                     width: auto; height:  9px; }
+div.calendar table td.calendarBorderTopRight     { background: radial-gradient(farthest-side at 0% 100%, #aaa, transparent);   width:  9px; height:  9px; }
+div.calendar table td.calendarBorderMiddleLeft   { background: linear-gradient(270deg, #aaa, transparent);                     width:  9px; height: auto; }
+div.calendar table td.calendarBorderMiddleRight  { background: linear-gradient( 90deg, #aaa, transparent);                     width:  9px; height: auto; }
+div.calendar table td.calendarBorderBottomLeft   { background: radial-gradient(farthest-side at 100% 0%, #aaa, transparent);   width:  9px; height:  9px; }
+div.calendar table td.calendarBorderBottomCenter { background: linear-gradient(180deg, #aaa, transparent);                     width: auto; height:  9px; }
+div.calendar table td.calendarBorderBottomRight  { background: radial-gradient(farthest-side at 0% 0%, #aaa, transparent);     width:  9px; height:  9px; }
+
+/* box-shadow */
+/* div.calendar { box-shadow: 0 0 2.0em #333; } */
+/* ------------------------------------- outline ------------------------------------- */
+
+
+/* ------------------------------------- navigation ------------------------------------- */
+/* text */
+/*
+div.calendar table td.calendarNavFastPrev:after { content: "<<"; }
+div.calendar table td.calendarNavPrev:after     { content: "<"; }
+div.calendar table td.calendarNavNext:after     { content: ">"; }
+div.calendar table td.calendarNavFastNext:after { content: ">>"; }
+*/
+
+/* image */
+div.calendar table td.calendarNavFastPrev { background-repeat: no-repeat; background-position: center center; background-image: url(../images/control_fastprev.png); }
+div.calendar table td.calendarNavPrev     { background-repeat: no-repeat; background-position: center center; background-image: url(../images/control_prev.png); }
+div.calendar table td.calendarNavNext     { background-repeat: no-repeat; background-position: center center; background-image: url(../images/control_next.png); }
+div.calendar table td.calendarNavFastNext { background-repeat: no-repeat; background-position: center center; background-image: url(../images/control_fastnext.png); }
+/* ------------------------------------- navigation ------------------------------------- */
+
+
+div.calendar table td.calendarNavFastPrev { text-align: center; cursor: pointer; background-color: #1e3b72; color: #c9d9ed; padding: 0.3em 0; }
+div.calendar table td.calendarNavPrev     { text-align: center; cursor: pointer; background-color: #1e3b72; color: #c9d9ed; padding: 0.3em 0; }
+div.calendar table td.calendarNavCenter   { text-align: center; cursor: pointer; background-color: #1e3b72; color: #fff; padding: 0.3em 0; }
+div.calendar table td.calendarNavNext     { text-align: center; cursor: pointer; background-color: #1e3b72; color: #c9d9ed; padding: 0.3em 0; }
+div.calendar table td.calendarNavFastNext { text-align: center; cursor: pointer; background-color: #1e3b72; color: #c9d9ed; padding: 0.3em 0; }
+div.calendar table td.calendarWeek        { text-align: center; background-color: #d8e4f2; color: #233d6d; border-bottom: 0.1em solid #a3bad9; padding: 0.3em 0; }
+div.calendar table td.calendarTodayPanel  { text-align: center; background-color: #c9d9ed; border-top: 0.1em solid #a3bad9; }
+
+div.calendar table td div { cursor: pointer; padding: 0.3em 0.5em; }
+div.calendar table td div.calendarDate {}
+div.calendar table td div.calendarDateNow { background-color: #ddecfe; color: #003c74; border: 0.1em solid #003c74; padding: 0.2em 0.4em; }
+div.calendar table td div.calendarToday { background-color: #f0f2f5; color: #2e4a89; border: 0.1em solid #003c74; display: inline-block; padding: 0.1em 1.0em; margin: 0.2em auto; }
+div.calendar table td div:hover { background-color: #ddecfe; }
