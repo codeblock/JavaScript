@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Editor test</title>
+        <http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css">
+        .light, .light * { background-color: #ffffff; color: #000000; }
+        .light input[type="text"], .light input[type="submit"], .light textarea { border: 1px solid #dddddd; }
+        .light fieldset { border: 0; box-shadow: 0 0 1.0em #aaa; }
+
+        .dark, .dark * { background-color: #000000; color: #ffffff; }
+        .dark input[type="text"], .dark input[type="submit"], .dark textarea { border: 1px solid #333333; }
+        .dark fieldset { border: 0; box-shadow: 0 0 1.0em #000; }
+
+        .container { margin: 1.0em auto; }
+        .container li { list-style-type: none; padding: 0.2em; }
+        .container li label { display: inline-block; width: 5.0em; vertical-align: top; }
+        </style>
+        <script type="text/javascript" src="./Editor/Editor.js" charset="UTF-8"></script>
+        <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var contents1 = new Editor();
+            contents1.sourceObj = document.getElementById("contents1");
+            contents1.path      = "./Editor/";
+            contents1.border    = "1px solid #dddddd";
+            contents1.foreColor = "#000000";
+            contents1.backColor = "#ffffff";
+            contents1.run();
+
+            var contents3 = new Editor();
+            contents3.sourceObj = document.getElementById("contents3");
+            contents3.path      = "./Editor/";
+            contents3.border    = "1px solid #333333";
+            contents3.foreColor = "#ffffff";
+            contents3.backColor = "#000000";
+            contents3.toolbox   = ["source", "forecolor", "backcolor", "emoticon", "image", "media", "underline", "bold", "italic"];
+            contents3.run();
+        }, false);
+
+        </script>
+    </head>
+    <body>
+
+        <div class="container light">
+            <form method="get">
+                <fieldset>
+                    <legend>Editor Example with Form</legend>
+                    <ul>
+                        <li>
+                            <label for="subject1">subject1</label>
+                            <input type="text" id="subject1" name="subject1" />
+                        </li>
+                        <li>
+                            <label for="contents1">contents1</label>
+                            <textarea id="contents1" name="contents1" rows="8" cols="80"></textarea>
+                        </li>
+                        <li>
+                            <input type="submit" value="submit" />
+                        </li>
+                    </ul>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="container dark">
+            <form method="get">
+                <fieldset>
+                    <legend>Editor Example with Form</legend>
+                    <ul>
+                        <li>
+                            <label for="subject2">subject2</label>
+                            <input type="text" id="subject2" name="subject2" />
+                        </li>
+                        <li>
+                            <label for="contents2">contents2</label>
+                            <textarea id="contents2" name="contents2" rows="4" cols="40">normal textarea</textarea>
+                            <textarea id="contents3" name="contents3" rows="4" cols="40"><i><b>pre</b>-<u>contents</u></i></textarea>
+                        </li>
+                        <li>
+                            <input type="submit" value="submit" />
+                        </li>
+                    </ul>
+                </fieldset>
+            </form>
+        </div>
+
+    </body>
+</html>
