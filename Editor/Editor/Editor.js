@@ -14,12 +14,139 @@ myEditor.backColor = "#000000";
 myEditor.run();
 */
 
+function getCaretManager(args) {
+    var m_mode_string = false;
+    var m_id_attr = "data-id";
+    var m_id_prefix = "";
+    var m_map = new Map();
+
+    if (args != null) {
+        if (args.m_mode_string != null) {
+            m_mode_string = new Boolean(args.m_mode_string);
+        }
+        if (args.m_id_attr != null) {
+            m_id_attr = String(args.m_id_attr);
+        }
+        if (args.m_id_prefix != null) {
+            m_id_prefix = String(args.m_id_prefix);
+        }
+    }
+    var m_id_attr_root = m_id_attr.concat("-root");
+
+    var closure = {
+        newid: function () {
+            return m_id_prefix + String(Date.now());
+        },
+        get: function (el) {
+            var rtn = { element: null, pos: 0 };
+
+            if (el.selectionStart !== undefined || el.selectionStart == 0) {
+                rtn.pos = el.selectionStart;
+            } else if (document.selection !== undefined) {
+                el.focus();
+                var sel = document.selection.createRange();
+                sel.moveStart("character", 0 - el.value.length);
+                rtn.pos = sel.text.length;
+            } else if (document.getSelection !== undefined) {
+                // <iframe>.contentWindow.document.designMode = 'on' || <element>.contentEditable = true
+                var doc = el.contentWindow?.document || document;
+                var selection = doc.getSelection();
+                if (selection.rangeCount > 0) {
+                    rtn.pos = selection.baseOffset;
+                    rtn.element = selection.baseNode;
+
+                    if (m_mode_string == true) {
+                        if (selection.baseNode.nodeType != 1) {
+                            if (selection.baseNode.parentNode.getAttribute(m_id_attr) != null) {
+                                selection.baseNode = selection.baseNode.parentNode;
+                                rtn.element = selection.baseNode.parentNode;
+                            } else {
+                                var span = document.createElement("span");
+                                span.innerHTML = selection.baseNode.data;
+                                span.setAttribute(m_id_attr, this.newid());
+                                selection.baseNode.parentNode.replaceChild(span, selection.baseNode);
+                                selection.baseNode = span;
+                                rtn.element = span;
+                            }
+                        }
+
+                        el.setAttribute(m_id_attr_root, rtn.element.getAttribute(m_id_attr));
+                    } else {
+                        var k = el.getAttribute(m_id_attr_root);
+                        if (k == null) {
+                            var k = this.newid();
+                            el.setAttribute(m_id_attr_root, k);
+                        }
+                        m_map.set(k, rtn.element);
+                    }
+                }
+            }
+
+            return rtn;
+        },
+        set: function (el, pos) {
+            if (el.setSelectionRange !== undefined) {
+                el.focus();
+                el.setSelectionRange(pos, pos);
+            } else if (el.createTextRange !== undefined) {
+                var range = el.createTextRange();
+                range.collapse(true);
+                range.moveEnd("character", pos);
+                range.moveStart("character", pos);
+                range.select();
+            } else if (document.getSelection !== undefined) {
+                // <iframe>.contentWindow.document.designMode = 'on' || <element>.contentEditable = true
+                var doc = el.contentWindow?.document || document;
+                var el_is = el.contentWindow?.document?.body || el;
+
+                // // ----------------- lost the saved Selection forcingly (selected element info initialization)
+                // if (m_mode_string == true) {
+                //     var lost_asis_selection_forcingly = el_is.innerHTML;
+                //     el_is.innerHTML = lost_asis_selection_forcingly;
+                // }
+                // // ----------------- lost the saved Selection forcingly (selected element info initialization)
+
+                var selection = doc.getSelection();
+                if (selection.rangeCount > 0 && el.getAttribute(m_id_attr_root) != null) {
+                    var k = el.getAttribute(m_id_attr_root);
+                    var el_focused = null;
+
+                    if (m_mode_string == true) {
+                        el_focused = el_is.querySelector("[" + m_id_attr + '="' + k + '"]');
+                        if (el_focused != null && el_focused.firstChild != null) {
+                            var range = selection.getRangeAt(0);
+                            pos = Math.min(Math.max(0, pos), el_focused.firstChild.nodeValue.length);
+                            range.setStart(el_focused.firstChild, pos);
+                            range.setEnd(el_focused.firstChild, pos);
+                        }
+                    } else {
+                        el_focused = m_map.get(k);
+                        if (el_focused != null) {
+                            var range = selection.getRangeAt(0);
+                            pos = Math.min(Math.max(0, pos), el_focused.length);
+                            range.setStart(el_focused, pos);
+                            range.setEnd(el_focused, pos);
+                        }
+                    }
+                }
+                el_is.focus();
+            }
+        },
+    };
+
+    return closure;
+}
+var caretManagerWithDataset = getCaretManager({ m_mode_string: true, m_id_attr: "data-caret", m_id_prefix: "data_caret_" });
+
 function Editor() {
     this.border = this.border ? this.border : "0 none";
     this.foreColor = this.foreColor ? this.foreColor : "#000000";
     this.backColor = this.backColor ? this.backColor : "#ffffff";
     this.fontSize = "0.86em";
     this.sourceObj = null;
+    this.editorObj = null;
+    this.sourceCaret = 0;
+    this.editorCaret = 0;
     this.formObj = null;
     this.basicStyle =
         this.basicStyle && this.basicStyle.head && this.basicStyle.foot
@@ -771,13 +898,35 @@ Editor.prototype = {
             this.sourceObj.value = this.editorObj.document.body.innerHTML;
         }
     },
+    loadCaret: function (el, pos) {
+        let rtn = 0;
+
+        if (pos != null && pos != "" && isNaN(pos) == false) {
+            // set
+            pos = Number(pos);
+            caretManagerWithDataset.set(el, pos);
+            rtn = pos;
+        } else {
+            // get
+            var caretinfo = caretManagerWithDataset.get(el);
+            rtn = caretinfo.pos;
+        }
+
+        return rtn;
+    },
     setSelection: function () {
+        this.selection = null;
+        this.range = null;
+        this.rangeEmpty = null;
+
         if (this.editorObj.getSelection) {
             // https://developer.mozilla.org/en-US/docs/Web/API/Selection
             // https://developer.mozilla.org/en-US/docs/Web/API/Range
             this.selection = this.editorObj.getSelection();
-            this.range = this.selection.getRangeAt(0);
-            this.rangeEmpty = this.range.collapsed;
+            if (this.selection.rangeCount > 0) {
+                this.range = this.selection.getRangeAt(0);
+                this.rangeEmpty = this.range.collapsed;
+            }
         } else {
             // https://msdn.microsoft.com/en-us/library/ms535869(v=vs.85).aspx
             // https://msdn.microsoft.com/en-us/library/ms535872(v=vs.85).aspx
@@ -901,7 +1050,7 @@ Editor.prototype = {
     },
     hideButtonMenu: function () {
         for (var i in this.toolbox) {
-            tool = this.toolbox[i];
+            var tool = this.toolbox[i];
             if (tool !== null) {
                 if (tool.menu !== null) {
                     tool.menu.style.display = "none";
@@ -946,12 +1095,14 @@ Editor.prototype = {
         return table;
     },
     switchObject: function () {
-        this.update();
         if (this.editMode == true) {
+            // this.setSelection();
+            this.editorCaret = this.loadCaret(this.editorObject); // save editor caret
+            this.update();
             this.editMode = false;
 
             for (var i in this.toolbox) {
-                tool = this.toolbox[i];
+                var tool = this.toolbox[i];
                 if (tool !== null && tool.button != null && tool.gui == true) {
                     tool.button.style.filter = "alpha(opacity = 20)";
                     tool.button.style.opacity = "0.2";
@@ -961,12 +1112,16 @@ Editor.prototype = {
             this.editorObject.style.display = "none";
             this.sourceObj.style.display = "inline-block";
             this.hideButtonMenu();
-            this.sourceObj.focus();
+
+            this.loadCaret(this.sourceObj, this.sourceCaret); // load source caret
+            // this.sourceObj.focus();
         } else {
+            this.sourceCaret = this.loadCaret(this.sourceObj); // save source caret
+            this.update();
             this.editMode = true;
 
             for (var i in this.toolbox) {
-                tool = this.toolbox[i];
+                var tool = this.toolbox[i];
                 if (tool !== null && tool.button != null && tool.gui == true) {
                     tool.button.style.filter = "alpha(opacity = 100)";
                     tool.button.style.opacity = "1.0";
@@ -975,7 +1130,9 @@ Editor.prototype = {
 
             this.sourceObj.style.display = "none";
             this.editorObject.style.display = "inline-block";
-            this.editorObj.document.body.focus();
+
+            this.loadCaret(this.editorObject, this.editorCaret); // load editor caret
+            // this.editorObj.document.body.focus();
         }
     },
     addEvent: function (object, events, func) {
