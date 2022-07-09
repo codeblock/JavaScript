@@ -2,45 +2,78 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>Editor test</title>
-        <http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <http-equiv ="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css">
-        .light, .light * { background-color: #ffffff; color: #000000; }
-        .light input[type="text"], .light input[type="submit"], .light textarea { border: 1px solid #dddddd; }
-        .light fieldset { border: 0; box-shadow: 0 0 1.0em #aaa; }
+            .light,
+            .light * {
+                background-color: #ffffff;
+                color: #000000;
+            }
+            .light input[type="text"],
+            .light input[type="submit"],
+            .light textarea {
+                border: 1px solid #dddddd;
+            }
+            .light fieldset {
+                border: 0;
+                box-shadow: 0 0 1em #aaa;
+            }
 
-        .dark, .dark * { background-color: #000000; color: #ffffff; }
-        .dark input[type="text"], .dark input[type="submit"], .dark textarea { border: 1px solid #333333; }
-        .dark fieldset { border: 0; box-shadow: 0 0 1.0em #000; }
+            .dark,
+            .dark * {
+                background-color: #000000;
+                color: #ffffff;
+            }
+            .dark input[type="text"],
+            .dark input[type="submit"],
+            .dark textarea {
+                border: 1px solid #333333;
+            }
+            .dark fieldset {
+                border: 0;
+                box-shadow: 0 0 1em #000;
+            }
 
-        .container { margin: 1.0em auto; }
-        .container li { list-style-type: none; padding: 0.2em; }
-        .container li label { display: inline-block; width: 5.0em; vertical-align: top; }
+            .container {
+                margin: 1em auto;
+            }
+            .container li {
+                list-style-type: none;
+                padding: 0.2em;
+            }
+            .container li label {
+                display: inline-block;
+                width: 5em;
+                vertical-align: top;
+            }
         </style>
         <script type="text/javascript" src="./Editor/Editor.js" charset="UTF-8"></script>
         <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            var contents1 = new Editor();
-            contents1.sourceObj = document.getElementById("contents1");
-            contents1.path      = "./Editor/";
-            contents1.border    = "1px solid #dddddd";
-            contents1.foreColor = "#000000";
-            contents1.backColor = "#ffffff";
-            contents1.run();
+            document.addEventListener(
+                "DOMContentLoaded",
+                function () {
+                    var contents1 = new Editor();
+                    contents1.sourceObj = document.getElementById("contents1");
+                    contents1.path = "./Editor/";
+                    contents1.border = "1px solid #dddddd";
+                    contents1.foreColor = "#000000";
+                    contents1.backColor = "#ffffff";
+                    contents1.run();
 
-            var contents3 = new Editor();
-            contents3.sourceObj = document.getElementById("contents3");
-            contents3.path      = "./Editor/";
-            contents3.border    = "1px solid #333333";
-            contents3.foreColor = "#ffffff";
-            contents3.backColor = "#000000";
-            contents3.toolbox   = ["source", "forecolor", "backcolor", "emoticon", "image", "media", "underline", "bold", "italic"];
-            contents3.run();
-        }, false);
-
+                    var contents3 = new Editor();
+                    contents3.sourceObj = document.getElementById("contents3");
+                    contents3.path = "./Editor/";
+                    contents3.border = "1px solid #333333";
+                    contents3.foreColor = "#ffffff";
+                    contents3.backColor = "#000000";
+                    contents3.toolbox = ["source", "forecolor", "backcolor", "emoticon", "image", "media", "underline", "bold", "italic"];
+                    contents3.run();
+                },
+                false
+            );
         </script>
     </head>
     <body>
-
         <div class="container light">
             <form method="get">
                 <fieldset>
@@ -83,6 +116,5 @@
                 </fieldset>
             </form>
         </div>
-
     </body>
 </html>
