@@ -52,20 +52,21 @@ function getCaretManager(args) {
                 var doc = el.contentWindow?.document || document;
                 var selection = doc.getSelection();
                 if (selection.rangeCount > 0) {
-                    rtn.pos = selection.baseOffset;
-                    rtn.element = selection.baseNode;
+                    rtn.pos = selection.anchorOffset;
+                    rtn.element = selection.anchorNode;
 
                     if (m_mode_string == true) {
-                        if (selection.baseNode.nodeType != 1) {
-                            if (selection.baseNode.parentNode.getAttribute(m_id_attr) != null) {
-                                selection.baseNode = selection.baseNode.parentNode;
-                                rtn.element = selection.baseNode.parentNode;
+                        // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+                        if (selection.anchorNode != null && selection.anchorNode.nodeType != Node.ELEMENT_NODE) {
+                            if (selection.anchorNode.parentNode.getAttribute(m_id_attr) != null) {
+                                selection.anchorNode = selection.anchorNode.parentNode;
+                                rtn.element = selection.anchorNode.parentNode;
                             } else {
                                 var span = document.createElement("span");
-                                span.innerHTML = selection.baseNode.data;
+                                span.innerHTML = selection.anchorNode.data;
                                 span.setAttribute(m_id_attr, this.newid());
-                                selection.baseNode.parentNode.replaceChild(span, selection.baseNode);
-                                selection.baseNode = span;
+                                selection.anchorNode.parentNode.replaceChild(span, selection.anchorNode);
+                                selection.anchorNode = span;
                                 rtn.element = span;
                             }
                         }
@@ -87,6 +88,7 @@ function getCaretManager(args) {
         set: function (el, pos) {
             if (el.setSelectionRange !== undefined) {
                 el.focus();
+                pos = Math.min(Math.max(0, pos), el.value.length);
                 el.setSelectionRange(pos, pos);
             } else if (el.createTextRange !== undefined) {
                 var range = el.createTextRange();
@@ -106,6 +108,7 @@ function getCaretManager(args) {
                 // }
                 // // ----------------- lost the saved Selection forcingly (selected element info initialization)
 
+                el_is.focus(); // Set selection when focus is lost
                 var selection = doc.getSelection();
                 if (selection.rangeCount > 0 && el.getAttribute(m_id_attr_root) != null) {
                     var k = el.getAttribute(m_id_attr_root);
@@ -129,6 +132,7 @@ function getCaretManager(args) {
                         }
                     }
                 }
+                el.focus(); // Mozilla Firefox
                 el_is.focus();
             }
         },
