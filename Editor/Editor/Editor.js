@@ -967,6 +967,7 @@ Editor.prototype = {
         }
 
         this.update();
+        this.editorObj.focus(); // Firefox
         this.editorObj.document.body.focus();
     },
     createNode: function (holder, source) {
@@ -1050,6 +1051,7 @@ Editor.prototype = {
             return;
         }
         this.editorObj.document.execCommand(method, false, property);
+        this.editorObj.focus(); // Firefox
         this.editorObj.document.body.focus();
     },
     hideButtonMenu: function () {
