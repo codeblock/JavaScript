@@ -75,7 +75,7 @@ function getCaretManager(args) {
                     } else {
                         var k = el.getAttribute(m_id_attr_root);
                         if (k == null) {
-                            var k = this.newid();
+                            k = this.newid();
                             el.setAttribute(m_id_attr_root, k);
                         }
                         m_map.set(k, rtn.element);
